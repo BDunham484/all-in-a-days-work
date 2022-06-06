@@ -206,7 +206,7 @@ loadSaves();
 createMoments();
 
 setInterval(function() {  
-    window.location.reload();
-    // createMoments();
-    // console.log("Re-Running createMoments()")
+    // window.location.reload();
+    createMoments();
+    console.log("Re-Running createMoments()")
 }, (1000 * 60));
