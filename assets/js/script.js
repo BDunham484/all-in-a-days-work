@@ -120,49 +120,48 @@ $(".row").on("click", ".time-block", function() {
 
 
 
-
-
 $(".saveBtn").on("click", function() {
-    console.log("clicked")
-     //automatically highlight the <textarea> for editing
-     $("textarea").trigger("blur");
-      //capture the textares's current value/text
-    var text = $(".form-control")
-    .val()
-    // .trim();
-    console.log(text)
-    // capture the parent's id attribute and edit it to get and recreate the current div ID
-    // debugger
+    //capture the parent's id attribute
+    var rowId = $(this)
+    .parent(".row")
+    .attr("id")
+    // // capture the parent's id attribute and edit it to get and recreate the current div ID
     var divId = $(this)
-        .parent(".row")
-        .attr("id")
-        .replace("row-", "");
-        console.log(divId)
-    //recreate <div>, adding classes, Id, and text
-    var taskDiv = $("<div>")
-        .addClass("col")
-        .addClass("col-10")
-        .addClass("time-block")
-        .attr("id", divId)
-        .text(text);
-    //replace textarea with <div>
-    $(".form-control").replaceWith(taskDiv);
-
-
-    // for (var i = 0; i < savedEvents.length; i++) {
-    //     if (!$("#" + savedEvents[i]).text()) {
-    //         console.log("aint nothing up in there")
-    //         // localStorage.setItem("event: " + savedEvents[i], JSON.stringify(""));
-    //         $("#" + savedEvents[i]).text("blorps");
-    //     }
-    // }
-
-    // saveEvents(text);
-    localStorage.setItem("event: " + divId, JSON.stringify(text));
-
-    //re-run createMoments()
-    createMoments();
-})
+    .parent(".row")
+    .attr("id")
+    .replace("row-", "");
+    //run conditional to determine whether time-block is in focus or not (has div or textarea as 2nd child of parent row)
+    if ($("#" + rowId).children().eq(1).is("div")) {
+         //capture the textares's current value/text
+        var text = $("#" + divId)
+        .text()
+        .trim();
+        // saveEvents(text);
+        localStorage.setItem("event: " + divId, JSON.stringify(text));
+        // //re-run createMoments()
+        createMoments();
+    } else {
+         //automatically deselect the <textarea> for editing
+        $("textarea").trigger("blur");
+        //capture the textares's current value/text
+        var text = $(".form-control")
+        .val()
+        .trim();
+        //recreate <div>, adding classes, Id, and text
+        var taskDiv = $("<div>")
+            .addClass("col")
+            .addClass("col-10")
+            .addClass("time-block")
+            .attr("id", divId)
+            .text(text);
+        //replace textarea with <div>
+        $(".form-control").replaceWith(taskDiv);
+        // saveEvents(text);
+        localStorage.setItem("event: " + divId, JSON.stringify(text));
+        //re-run createMoments()
+        createMoments();
+    };
+});
 
 
 
@@ -188,15 +187,23 @@ loadSaves();
 
 
 // // remove all tasks
-// $("#clear-all").on("click", function() {
-//     console.log("clear all button clicked")
+$("#clear-all").on("click", function() {
+    console.log("clear all button clicked")
 
-//     for (var i = 0; i < savedEvents.length; i++) {
-//         localStorage.setItem("event: " + savedEvents[i], JSON.stringify(""));
-//     }
-    
-//     // saveTasks();
-//   });
+    for (var i = 0; i < savedEvents.length; i++) {
+        localStorage.setItem("event: " + savedEvents[i], JSON.stringify(""));
+    }
+    //refresh browser and update text for each time block
+    window.location.reload();
+});
+
+
+
+
+
+
+
+
 
 
 
@@ -206,7 +213,7 @@ loadSaves();
 createMoments();
 
 setInterval(function() {  
-    // window.location.reload();
-    createMoments();
-    console.log("Re-Running createMoments()")
+    window.location.reload();
+    // createMoments();
+    // console.log("Re-Running createMoments()")
 }, (1000 * 60));

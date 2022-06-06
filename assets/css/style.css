@@ -82,4 +82,14 @@ textarea{
   transition: all .3s ease-in-out;
 }
 
+#clear-all {
+  background-color: #a8dadc;
+  border: 5px solid black;
+  padding: 20px 40px;
+  margin-top: 40px;
+  font-weight: 900;
+  font-size: xx-large;
+  box-shadow: -5px 5px 5px rgb(95, 93, 93);
+}
+
 
