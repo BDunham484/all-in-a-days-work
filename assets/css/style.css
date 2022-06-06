@@ -42,6 +42,7 @@ textarea{
   background-color: #5c7a9f;
   color: #000000;
   border-top: 1px dashed #000000;
+  font-weight: 600;
 }
 
 .past {
