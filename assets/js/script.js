@@ -1,5 +1,5 @@
 
-//display the daye and day in the heading
+//display the day and day in the heading
 var day = moment().format('dddd, MMMM Do');
 $("#currentDay").text(day);
 
@@ -11,19 +11,6 @@ var workHoursClassArr = [".nine", ".ten", ".eleven", ".twelve", ".one", ".two", 
 var savedEvents = ["nine", "ten", "eleven", "twelve", "one", "two", "three", "four", "five"];
 
 
-
-
-
-//create function that checks to see if the current moment is before, after, or present(during) the current time block
-var checkTime = function(start, end, id) {
-    if (moment().isAfter(start) && moment().isBefore(end)) {
-        $(id).addClass("present");
-    } else if (moment().isAfter(end)) {
-        $(id).addClass("past");
-    } else if (moment().isBefore(start)) {
-        $(id).addClass("future");
-    }
-}
 
 
 
@@ -51,13 +38,28 @@ var createMoments = function() {
             var aOrP = time.charAt(aOrPIndex);
             //creates a moment based on the start time of each time-block
             var blockTimeStart = moment(hour + ":00:00 " + aOrP + "M", "h:mm:ss a");
-            // console.log(blockTimeStart)
+            console.log(blockTimeStart)
             //creates a moment based on the end time of each time-block
             var blockTimeEnd = moment(hour + ":59:59 " + aOrP + "M", "h:mm:ss a");
-            // console.log(blockTimeEnd)
+            console.log(blockTimeEnd)
             //function call
             checkTime(blockTimeStart, blockTimeEnd, hoursId);
-        }
+        };
+    };
+};
+
+
+
+
+
+//create function that checks to see if the current moment is before, after, or present(during) the current time block
+var checkTime = function(start, end, id) {
+    if (moment().isAfter(start) && moment().isBefore(end)) {
+        $(id).addClass("present");
+    } else if (moment().isAfter(end)) {
+        $(id).addClass("past");
+    } else if (moment().isBefore(start)) {
+        $(id).addClass("future");
     }
 }
 
@@ -65,6 +67,7 @@ var createMoments = function() {
 
 
 
+//creates a textarea when a time block is clicked
 $(".row").on("click", ".time-block", function() {
     console.log(".time-block has been clicked");
     //capture any previous text
@@ -89,43 +92,13 @@ $(".row").on("click", ".time-block", function() {
 
 
 
-
-// //function to define what happens when the selcted div's row becomes out of focus
-// $(".row").on("blur", "textarea", function() {
-//     //capture the textares's current value/text
-//     var text = $(this)
-//     .val()
-//     .trim();
-//     // capture the parent's id attribute and edit it to get and recreate the current div ID
-//     var divId = $(this)
-//         .closest(".row")
-//         .attr("id")
-//         .replace("row-", "");
-//     //recreate <div>, adding classes, Id, and text
-//     var taskDiv = $("<div>")
-//         .addClass("col")
-//         .addClass("col-10")
-//         .addClass("time-block")
-//         .attr("id", divId)
-//         .text(text);
-//     //replace textarea with <div>
-//     $(this).replaceWith(taskDiv);
-
-//     // saveEvents(text);
-//     localStorage.setItem("event: " + divId, JSON.stringify(text));
-
-//     //re-run createMoments()
-//     createMoments();
-//   })
-
-
-
+//sets a click event on the save button.  When pressed it saves the current text or lock of to local storage.
 $(".saveBtn").on("click", function() {
     //capture the parent's id attribute
     var rowId = $(this)
     .parent(".row")
     .attr("id")
-    // // capture the parent's id attribute and edit it to get and recreate the current div ID
+    // capture the parent's id attribute and edit it to recreate the current div ID
     var divId = $(this)
     .parent(".row")
     .attr("id")
@@ -141,7 +114,7 @@ $(".saveBtn").on("click", function() {
         // //re-run createMoments()
         createMoments();
     } else {
-         //automatically deselect the <textarea> for editing
+         //automatically deselect the <textarea>
         $("textarea").trigger("blur");
         //capture the textares's current value/text
         var text = $(".form-control")
@@ -166,21 +139,16 @@ $(".saveBtn").on("click", function() {
 
 
 
+
 //load saves from localStorage and assign them to the text values of the appropriate div's
 var loadSaves = function() {
-    // debugger
+    // iterate through all items in local storage and apply to appropriate id's
     for (var i = 0; i < savedEvents.length; i++) {
         events = JSON.parse(localStorage.getItem("event: " + savedEvents[i]));
-    //    if (!$("#" + savedEvents[i]).text()) {
-    //         console.log("aint nothing up in there")
-    //         localStorage.setItem("event: " + savedEvents[i], JSON.stringify(""));
-    //    };
 
         $("#" + savedEvents[i]).text(events);
-    }
-}
-
-loadSaves();
+    };
+};
 
 
 
@@ -188,8 +156,7 @@ loadSaves();
 
 // // remove all tasks
 $("#clear-all").on("click", function() {
-    console.log("clear all button clicked")
-
+    //loop through all saves in localStorage and change them to an empty string
     for (var i = 0; i < savedEvents.length; i++) {
         localStorage.setItem("event: " + savedEvents[i], JSON.stringify(""));
     }
@@ -200,18 +167,11 @@ $("#clear-all").on("click", function() {
 
 
 
-
-
-
-
-
-
-
-
-
-
+//createMoments function call
 createMoments();
-
+//loadSaves function call
+loadSaves();
+//reloads the page every minute
 setInterval(function() {  
     window.location.reload();
     // createMoments();
