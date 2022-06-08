@@ -1,6 +1,6 @@
 
 //display the day and day in the heading
-var day = moment().format('dddd, MMMM Do');
+var day = moment().format('dddd, MMMM Do,h:mm:ss a');
 $("#currentDay").text(day);
 
 //create array that houses all of the work hour ID's
@@ -52,7 +52,7 @@ var createMoments = function() {
 
 
 
-//create function that checks to see if the current moment is before, after, or present(during) the current time block
+//function that checks to see if the current moment is before, after, or present(during) the current time block and assigns each one the appropriate background color
 var checkTime = function(start, end, id) {
     if (moment().isAfter(start) && moment().isBefore(end)) {
         $(id).addClass("present");
@@ -69,7 +69,6 @@ var checkTime = function(start, end, id) {
 
 //creates a textarea when a time block is clicked
 $(".row").on("click", ".time-block", function() {
-    console.log(".time-block has been clicked");
     //capture any previous text
     var text = $(this)
         .text()
@@ -173,7 +172,8 @@ createMoments();
 loadSaves();
 //reloads the page every minute
 setInterval(function() {  
-    window.location.reload();
-    // createMoments();
-    // console.log("Re-Running createMoments()")
+    // window.location.reload();
+    createMoments();
+    console.log("Re-Running createMoments()")
+    // $("#currentDay").text(day);
 }, (1000 * 60));
