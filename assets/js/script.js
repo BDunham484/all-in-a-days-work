@@ -1,7 +1,17 @@
+//sets the text at the top of the page to display the current day, date, and time.
+var update = function() {
+    date = moment(new Date())
+    $("#currentDay").text(date.format('dddd, MMMM Do YYYY, h:mm:ss a'));
+};
+//calls the update() function overy second
+$(document).ready(function(){
+    update();
+    setInterval(update, 1000);
+});
 
-//display the day and day in the heading
-var day = moment().format('dddd, MMMM Do,h:mm:ss a');
-$("#currentDay").text(day);
+
+
+
 
 //create array that houses all of the work hour ID's
 var workHoursIdArr = ["#nine", "#ten", "#eleven", "#twelve", "#one", "#two", "#three", "#four", "#five"];
@@ -14,13 +24,13 @@ var savedEvents = ["nine", "ten", "eleven", "twelve", "one", "two", "three", "fo
 
 
 
-//function that iterates over two arrays to ultimately create two variables that portray the start and end of each time block's hour and then pass them to checkTime()
+//function that iterates over two arrays to ultimately create a military time integer to represent each time block
 var createMoments = function() {
     for (var i = 0; i < workHoursIdArr.length; i++) {
         //iterate through arrays
         var hoursId = workHoursIdArr[i];
         var hoursClass = workHoursClassArr[i];
-        //conditional that captres the start and end time of each time block and creates moments for both times
+        //conditional that captures the hour of each time block, parses, and converts to military time
         if ($("hoursId")) {
             //captures the time text assigned to each block
             var time = $(hoursClass).text();
@@ -36,14 +46,16 @@ var createMoments = function() {
             var aOrPIndex = time.length - 2;
             //captures the "A" or "P" (am or pm) using the previously captured index
             var aOrP = time.charAt(aOrPIndex);
-            //creates a moment based on the start time of each time-block
-            var blockTimeStart = moment(hour + ":00:00 " + aOrP + "M", "h:mm:ss a");
-            console.log(blockTimeStart)
-            //creates a moment based on the end time of each time-block
-            var blockTimeEnd = moment(hour + ":59:59 " + aOrP + "M", "h:mm:ss a");
-            console.log(blockTimeEnd)
+            //nested conditional that parses the hour and converts to military time
+            if ((hour + aOrP + "M") === "12PM") {
+                var blockTimeHour = parseInt(hour);
+            } else if (aOrP === "A") {
+                var blockTimeHour = parseInt(hour);
+            } else {
+                var blockTimeHour = (parseInt(hour)) + 12;
+            }
             //function call
-            checkTime(blockTimeStart, blockTimeEnd, hoursId);
+            checkTime(blockTimeHour, hoursId);
         };
     };
 };
@@ -51,17 +63,21 @@ var createMoments = function() {
 
 
 
-
 //function that checks to see if the current moment is before, after, or present(during) the current time block and assigns each one the appropriate background color
-var checkTime = function(start, end, id) {
-    if (moment().isAfter(start) && moment().isBefore(end)) {
+var checkTime = function(hour, id) {
+    var parsedHour = parseInt(moment(new Date()).format('H:mm:ss a'))
+
+    if (parsedHour === hour) {
+        $(id).removeClass("future");
         $(id).addClass("present");
-    } else if (moment().isAfter(end)) {
+    } else if (parsedHour > hour) {
+        $(id).removeClass("present") 
         $(id).addClass("past");
-    } else if (moment().isBefore(start)) {
+    } else if (parsedHour < hour) {
+        $(id).removeClass("present");
         $(id).addClass("future");
     }
-}
+};
 
 
 
@@ -91,7 +107,7 @@ $(".row").on("click", ".time-block", function() {
 
 
 
-//sets a click event on the save button.  When pressed it saves the current text or lock of to local storage.
+//sets a click event on the save button.  When pressed it saves the current text or an empty string to local storage.
 $(".saveBtn").on("click", function() {
     //capture the parent's id attribute
     var rowId = $(this)
@@ -159,8 +175,8 @@ $("#clear-all").on("click", function() {
     for (var i = 0; i < savedEvents.length; i++) {
         localStorage.setItem("event: " + savedEvents[i], JSON.stringify(""));
     }
-    //refresh browser and update text for each time block
-    window.location.reload();
+    //call loadSaves() and load empty strings from local storage to time-blocks
+    loadSaves();
 });
 
 
@@ -170,10 +186,7 @@ $("#clear-all").on("click", function() {
 createMoments();
 //loadSaves function call
 loadSaves();
-//reloads the page every minute
+//calls the createMoments() function every second
 setInterval(function() {  
-    // window.location.reload();
-    createMoments();
-    console.log("Re-Running createMoments()")
-    // $("#currentDay").text(day);
-}, (1000 * 60));
+   createMoments();  
+}, (1000));
