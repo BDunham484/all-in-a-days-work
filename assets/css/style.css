@@ -16,7 +16,6 @@ textarea{
 
 .jumbotron {
   text-align: center;
-  /* background-color: transparent; */
   background-color: #a8dadc;
   color: black;
   border-radius: 0;
@@ -38,7 +37,6 @@ textarea{
 }
 
 .hour {
-  /* background-color: #ffffff; */
   background-color: #5c7a9f;
   color: #000000;
   border-top: 1px dashed #000000;
@@ -46,7 +44,6 @@ textarea{
 }
 
 .past {
-  /* background-color: #d3d3d3; */
   background-color: #dde5b6;
   color: black;
   padding: 20px;
@@ -54,7 +51,6 @@ textarea{
 }
 
 .present {
-  /* background-color: #ff6961; */
   background-color: #f07167;
   color: black;
   padding: 20px;
@@ -62,7 +58,6 @@ textarea{
 }
 
 .future {
-  /* background-color: #77dd77; */
   background-color: #adc178;
   color: black;
   padding: 20px;
@@ -73,7 +68,6 @@ textarea{
   border-left: 1px solid black;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
-  /* background-color: #06AED5; */
   background-color: #355070;
   color: white;
 }
@@ -92,5 +86,10 @@ textarea{
   font-size: xx-large;
   box-shadow: -5px 5px 5px rgb(95, 93, 93);
 }
+
+
+
+
+
 
 

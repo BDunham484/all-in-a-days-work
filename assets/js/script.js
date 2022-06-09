@@ -95,7 +95,8 @@ $(".row").on("click", ".time-block", function() {
      //create and capture a textarea with a class of .form-control and assign it's value to be the previously captured text
     var textInput = $("<textarea>")
         .addClass("form-control")
-        .addClass("col-10")
+        .addClass("col-8")
+        .addClass("col-lg-10")
         .val(text);
     //replace the <p> elemnet with the new <textarea>
     $(this).replaceWith(textInput);
@@ -137,8 +138,8 @@ $(".saveBtn").on("click", function() {
         .trim();
         //recreate <div>, adding classes, Id, and text
         var taskDiv = $("<div>")
-            .addClass("col")
-            .addClass("col-10")
+            .addClass("col-8")
+            .addClass("col-lg-10")
             .addClass("time-block")
             .attr("id", divId)
             .text(text);
