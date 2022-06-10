@@ -21,6 +21,6 @@ A third-party API based work day scheduler.
 
 ## Website Url:
 
-* https://bdunham484.github.io/js_code_quiz/
+* https://bdunham484.github.io/all-in-a-days-work/
 
 * Made with ❤️ by Brad Dunham
